@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "axios": "^0.26.1",
+    "bootstrap-icons": "^1.8.1",
     "js-md5": "^0.7.3",
     "vuetify": "^2.6.4"
   }

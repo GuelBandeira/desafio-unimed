@@ -13,9 +13,6 @@ export default {
   name: "home",
   components: {
     Personagens,
-    mounted() {
-      this.getPersonagens();
-    },
   },
 };
 </script>
