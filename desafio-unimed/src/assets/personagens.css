@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+.btn-danger {
+  font-size: 16px;
+  position: absolute;
+  z-index: 99;
+  top: 90%;
+  border-top-left-radius: 99999px;
+  font-size: 16px;
+  left: 70%;
+  display: inline-flex;
+}
+
+.card-box {
+  width: 300px;
+  height: 400px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 10px 0px,
+    rgba(0, 0, 0, 0.5) 0px 2px 25px 0px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.card {
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  background: #202020;
+  border-radius: 20px;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+  padding: 20px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.card .content h3 {
+  font-size: 3rem;
+  padding-bottom: 10px;
+}
+.card .content p {
+  font-size: 1.6rem;
+  line-height: 25px;
+  padding: 0;
+}
+.card .content {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: -1;
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  padding: 35px;
+}
+
+.card:hover .content {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card-box::before {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 150%;
+  background: #40e0d0;
+  background: -webkit-linear-gradient(to right, #ff0000, #ff4141, #ff6a6a);
+  background: linear-gradient(to right, #ff0000, #ff4141, #ff6a6a);
+  animation: glowing01 5s linear infinite;
+  transform-origin: center;
+  animation: glowing 5s linear infinite;
+}
+
+@keyframes glowing {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

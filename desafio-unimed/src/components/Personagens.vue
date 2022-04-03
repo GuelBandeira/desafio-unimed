@@ -1,82 +1,63 @@
 <script setup>
 import axios from "axios";
 import { chave_publica, hash, ts } from "../keys";
+import "../assets/personagens.css";
 </script>
 
-<style>
-img {
-  float: left;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 10;
-  width: 30px;
-  height: auto;
-  margin-top: 8px;
-  border: 1px solid red;
-}
-
-h2,
-.accordion-collapse {
-  padding-left: 1.2em;
-}
-</style>
-
 <template>
-  <div id="personagens">
-    <div class="accordion" id="accordionExample">
-      <div class="container">
-        <div class="row">
-          <button @click="ordenar()" class="btn btn-default">Ordenar</button>
-          <div
-            class="accordion-item"
-            v-for="personagem in personagens"
-            :key="personagem.id"
-          >
-            <img
-              :src="`${personagem.thumbnail.path}/standard_large.jpg`"
-              class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
-              alt=""
-            />
-            <h2 class="accordion-header" v-bind:id="`#id-${personagem.id}`">
-              <button @click="addQty(personagem)" class="btn btn-danger btn-sm">
+  <div id="personagens-marvel">
+    <div class="container">
+      <div class="row">
+        <!-- Replicar codigo abaixo para todos os elementos do vetor -->
+        <div
+          class="col-md-4"
+          v-for="personagem in personagens"
+          :key="personagem.id"
+        >
+          <div class="card-box m-5">
+            <!-- Definindo imagem do personagem como background -->
+            <div
+              class="card"
+              v-bind:style="{
+                'background-image': `url(${personagem.thumbnail.path}/portrait_incredible.jpg)`,
+              }"
+            >
+              <div class="layer"></div>
+              <div class="content">
+                <!-- Passando o nome do personagem -->
+                <h3>{{ personagem.name }}</h3>
+
+                <!-- Verificando se o personagem tem descrição -->
+                <p v-if="personagem.description == ''">
+                  O personagem não possui informação.
+                </p>
+
+                <!-- Passando sua descrição caso existir -->
+                <p v-else>
+                  {{ personagem.description }}
+                </p>
+              </div>
+              <!-- Botao Favorito -->
+              <button
+                @click="favoritar(personagem)"
+                class="btn btn-danger btn-lg my-2 px-5"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-heart"
+                  class="bi bi-heart-fill m-1 mx-2"
                   viewBox="0 0 16 16"
                 >
                   <path
-                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                    fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
                   />
                 </svg>
-                {{ personagem.qty }}
+                <!-- Quantidade de Favoritos -->
+                {{ personagem.numFavoritos }}
               </button>
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                v-bind:data-bs-target="`#id-${personagem.id}`"
-                aria-expanded="false"
-                v-bind:aria-controls="`id-${personagem.id}`"
-              >
-                {{ personagem.name }}
-              </button>
-            </h2>
-
-            <div
-              v-bind:id="`id-${personagem.id}`"
-              class="accordion-collapse collapse"
-              v-bind:aria-labelledby="`#id-${personagem.id}`"
-              data-bs-parent="#accordionExample"
-            >
-              <div class="accordion-body" v-if="personagem.description == ''">
-                O personagem não possui informação.
-              </div>
-              <div class="accordion-body" v-else>
-                {{ personagem.description }}
-              </div>
             </div>
           </div>
         </div>
@@ -86,39 +67,45 @@ h2,
 </template>
 <script>
 export default {
-  name: "Personagens",
+  name: "personagens-marvel",
 
   data() {
+    //Definindo variavel
     return {
       personagens: [],
     };
   },
 
   mounted() {
+    //Chamando a função da API
     this.getPersonagens();
   },
   methods: {
-    ordenar: function () {
-      this.personagens.sort((a, b) => (a.qty > b.qty ? -1 : 1));
-    },
+    favoritar: function (element) {
+      //Adicionando no contador de favoritos
+      element.numFavoritos += 1;
 
-    addQty: function (item) {
-      item.qty += 1;
+      //Ordenando elementos baseado no numero de favoritos
+      this.personagens.sort((a, b) =>
+        a.numFavoritos > b.numFavoritos ? -1 : 1
+      );
     },
 
     getPersonagens: function () {
       axios
         .get(
+          //Passando os parametros para a API
           `http://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${chave_publica}&hash=${hash}`
         )
         .then((resultado) => {
+          //Pegando as informações de cada personagem
           resultado.data.data.results.forEach((element) => {
+            //Adicionando no vetor 'personagens'
             this.personagens.push(element);
-            Object.assign(element, { qty: 0 });
+
+            //Adicionando o atributo 'numero de favoritos' para todos os elementos
+            Object.assign(element, { numFavoritos: 0 });
           });
-        })
-        .catch((error) => {
-          console.log(error);
         });
     },
   },

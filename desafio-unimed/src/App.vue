@@ -3,14 +3,14 @@ import Personagens from "@/components/Personagens.vue";
 </script>
 
 <template>
-  <div id="home">
+  <div id="tela-inicio">
     <Personagens />
   </div>
 </template>
 
 <script>
 export default {
-  name: "home",
+  name: "tela-inicio",
   components: {
     Personagens,
   },
