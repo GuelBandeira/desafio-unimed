@@ -95,7 +95,7 @@ export default {
       axios
         .get(
           //Passando os parametros para a API
-          `http://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${chave_publica}&hash=${hash}`
+          `https://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${chave_publica}&hash=${hash}`
         )
         .then((resultado) => {
           //Pegando as informações de cada personagem
